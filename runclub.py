@@ -31,14 +31,16 @@ for run in r.json():
         timestamp = timegm(time_start)
         c.execute('SELECT * FROM runs WHERE run_id=?', (activity_id,))
         if c.fetchone() is None:
-                c.execute('INSERT INTO runs VALUES (?,?,?,?)', (activity_id, runner, distance, timestamp,))
+                c.execute('INSERT INTO runs VALUES (?,?,?,?)', 
+                    (activity_id, runner, distance, timestamp,))
                 conn.commit()
         else:
                 pass
 
 seven_days = time.time() - 604800
 
-c.execute('SELECT runner, sum(miles) FROM runs WHERE time > ? GROUP BY runner;', (seven_days,))
+c.execute('SELECT runner, sum(miles) FROM runs WHERE time > ? GROUP BY runner;', 
+    (seven_days,))
 seven_day_mileage = c.fetchall()
 
 conn.close()
