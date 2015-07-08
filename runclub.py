@@ -48,4 +48,5 @@ conn.close()
 for dog in seven_day_mileage:
         host = str(dog[0])
         point = round(dog[1], 3)
-        api.Metric.send(metric='dd.running.miles', points=point, host=host)
+        api.Metric.send(metric='dd.running.miles', points=point, 
+            host="runclub", tags=["runner:%s" % host])
