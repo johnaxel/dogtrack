@@ -24,18 +24,18 @@ conn = sqlite3.connect('/home/john/runclub/runlog.db')
 c = conn.cursor()
 
 for run in r.json():
-        activity_id = str(run['id'])
-        runner = run['athlete']['firstname'].lower()
-        distance = float(run['distance']) / 1609.34
-        time_start = time.strptime(run['start_date_local'], '%Y-%m-%dT%H:%M:%SZ')
-        timestamp = timegm(time_start)
-        c.execute('SELECT * FROM runs WHERE run_id=?', (activity_id,))
-        if c.fetchone() is None:
-                c.execute('INSERT INTO runs VALUES (?,?,?,?)', 
-                    (activity_id, runner, distance, timestamp,))
-                conn.commit()
-        else:
-                pass
+    activity_id = str(run['id'])
+    runner = run['athlete']['firstname'].lower()
+    distance = float(run['distance']) / 1609.34
+    time_start = time.strptime(run['start_date_local'], '%Y-%m-%dT%H:%M:%SZ')
+    timestamp = timegm(time_start)
+    c.execute('SELECT * FROM runs WHERE run_id=?', (activity_id,))
+    if c.fetchone() is None:
+        c.execute('INSERT INTO runs VALUES (?,?,?,?)', 
+            (activity_id, runner, distance, timestamp,))
+        conn.commit()
+    else:
+        pass
 
 seven_days = time.time() - 604800
 
@@ -46,7 +46,7 @@ seven_day_mileage = c.fetchall()
 conn.close()
 
 for dog in seven_day_mileage:
-        host = str(dog[0])
-        point = round(dog[1], 3)
-        api.Metric.send(metric='dd.running.miles', points=point, 
-            host="runclub", tags=["runner:%s" % host])
+    host = str(dog[0])
+    point = round(dog[1], 3)
+    api.Metric.send(metric='dd.running.miles', points=point, 
+        host="runclub", tags=["runner:%s" % host])
