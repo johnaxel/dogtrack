@@ -34,6 +34,8 @@ for run in r.json():
         c.execute('INSERT INTO runs VALUES (?,?,?,?)', 
             (activity_id, runner, distance, timestamp,))
         conn.commit()
+        api.Metric.send(metric='runclub.miles', points=round(distance, 3), 
+            host="runclub", tags=["runner:%s" % runner])
     else:
         pass
 
