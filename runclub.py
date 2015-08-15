@@ -23,14 +23,6 @@ r = requests.get(url, headers=headers)
 conn = sqlite3.connect('/home/john/runclub/runlog.db')
 c = conn.cursor()
 
-thirty_days = time.time() - 2592000
-
-c.execute('SELECT runner FROM runs WHERE time > ? GROUP BY runner;', (thirty_days,))
-
-dormant_runners = c.fetchall()
-
-active_runners = []
-
 for run in r.json():
     activity_id = str(run['id'])
     runner = run['athlete']['firstname'].lower()
@@ -42,16 +34,6 @@ for run in r.json():
         c.execute('INSERT INTO runs VALUES (?,?,?,?)', 
             (activity_id, runner, distance, timestamp,))
         conn.commit()
-        api.Metric.send(metric='runclub.miles', points=round(distance, 3), 
-            host="runclub", tags=["runner:%s" % runner])
-        active_runners.append(runner)
-    else:
-        pass
-
-for dormant_runner in dormant_runners:
-    if dormant_runner not in active_runners:
-        api.Metric.send(metric='runclub.miles', points=0, 
-            host="runclub", tags=["runner:%s" % dormant_runner])
     else:
         pass
 
