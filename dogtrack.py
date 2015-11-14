@@ -43,7 +43,7 @@ c.execute('SELECT runner, sum(miles) FROM runs WHERE time > ? GROUP BY runner;',
     (seven_days,))
 seven_day_mileage = c.fetchall()
 
-c.execute('SELECT sum(miles) from runs where runner = 'marek';')
+c.execute('SELECT sum(miles) from runs where runner = ?;', ('marek',))
 marek_2015_total = c.fetchall() + 329.08 # add the miles that predate the db
 
 conn.close()
