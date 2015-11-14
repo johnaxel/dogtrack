@@ -7,7 +7,7 @@ from calendar import timegm
 from datadog import initialize, api
 import json
 
-settings = json.load(open('/home/john/runclub/conf/settings.json'))
+settings = json.load(open('/home/john/dogtrack/conf/settings.json'))
 
 url = 'https://www.strava.com/api/v3/clubs/%s/activities' % settings['strava']['club_id']
 headers = {'Authorization': 'Bearer %s' % settings['strava']['token']}
@@ -20,7 +20,7 @@ options = {
 initialize(**options)
 
 r = requests.get(url, headers=headers)
-conn = sqlite3.connect('/home/john/runclub/runlog.db')
+conn = sqlite3.connect('/home/john/dogtrack/runlog.db')
 c = conn.cursor()
 
 for run in r.json():
