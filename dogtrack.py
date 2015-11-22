@@ -43,20 +43,21 @@ c.execute('SELECT runner, sum(miles) FROM runs WHERE time > ? GROUP BY runner;',
     (seven_days,))
 seven_day_mileage = c.fetchall()
 
-c.execute('SELECT sum(miles) from runs where runner = ?;', ('marek',))
-marek_2015_total = c.fetchone()[0] + 329.08 # add the miles that predate the db
+c.execute('SELECT runner, sum(miles) FROM runs GROUP BY runner;')
+all_time_mileage = c.fetchall()
 
 conn.close()
 
 for dog in seven_day_mileage:
     host = str(dog[0])
     point = round(dog[1], 3)
-    api.Metric.send(metric='dd.running.miles', points=point, 
-        host="runclub", tags=["runner:%s" % host])
     api.Metric.send(metric='dogtrack.running.seven_day_mileage', points=point,
         host="runclub", tags=["runner:%s" % host])
 
-api.Metric.send(metric='dogtrack.running.ytd_mileage', points=marek_2015_total, 
-        host="runclub", tags=["runner:marek"])
+for dog in all_time_mileage:
+    host = str(dog[0])
+    point = round(dog[1], 3)
+    api.Metric.send(metric='dogtrack.running.ytd_mileage', points=point,
+        host="runclub", tags=["runner:%s" % host])
 
 
