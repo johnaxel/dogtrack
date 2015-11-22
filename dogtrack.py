@@ -46,7 +46,7 @@ seven_day_mileage = c.fetchall()
 c.execute('SELECT runner, sum(miles) FROM runs GROUP BY runner;')
 all_time_mileage = c.fetchall()
 
-c.execute('SELECT runner, miles FROM runs ORDER BY miles DESC LIMIT 5;')
+c.execute('SELECT runner, miles, time FROM runs ORDER BY miles DESC LIMIT 5;')
 high_scores = c.fetchall()
 
 conn.close()
@@ -66,6 +66,8 @@ for dog in all_time_mileage:
 for dog in high_scores:
     host = str(dog[0])
     point = round(dog[1], 3)
+    run_date_struct = time.gmtime(dog[2])
+    run_date_readable = "%s-%s-%s" % (run_date_struct[0], run_date_struct[1], run_date_struct[2])
     api.Metric.send(metric='dogtrack.running.high_scores', points=point,
-        host="runclub", tags=["runner:%s" % host])
+        host="runclub", tags=["high_score_mark:%s-%s" % (host, run_date_readable)]
 
