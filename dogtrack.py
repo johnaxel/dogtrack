@@ -57,7 +57,7 @@ for dog in seven_day_mileage:
 for dog in all_time_mileage:
     host = str(dog[0])
     point = round(dog[1], 3)
-    api.Metric.send(metric='dogtrack.running.ytd_mileage', points=point,
+    api.Metric.send(metric='dogtrack.running.alltime_mileage', points=point,
         host="runclub", tags=["runner:%s" % host])
 
 
