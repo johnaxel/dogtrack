@@ -69,5 +69,4 @@ for dog in high_scores:
     run_date_struct = time.gmtime(dog[2])
     run_date_readable = "%s-%s-%s" % (run_date_struct[0], run_date_struct[1], run_date_struct[2])
     api.Metric.send(metric='dogtrack.running.high_scores', points=point,
-        host="runclub", tags=["high_score_mark:%s-%s" % (host, run_date_readable)]
-
+        host="runclub", tags=["high_score_mark:%s-%s" % (host, run_date_readable)])
