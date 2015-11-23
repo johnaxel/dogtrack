@@ -46,7 +46,7 @@ seven_day_mileage = c.fetchall()
 c.execute('SELECT runner, sum(miles) FROM runs GROUP BY runner;')
 all_time_mileage = c.fetchall()
 
-c.execute('SELECT runner, miles, time FROM runs ORDER BY miles DESC LIMIT 5;')
+c.execute('SELECT runner, miles, time FROM runs ORDER BY miles DESC LIMIT 10;')
 high_scores = c.fetchall()
 
 conn.close()
