@@ -43,10 +43,10 @@ c.execute('SELECT runner, sum(miles) FROM runs WHERE time > ? GROUP BY runner;',
     (seven_days,))
 seven_day_mileage = c.fetchall()
 
-c.execute('SELECT runner, sum(miles) FROM runs GROUP BY runner;')
+c.execute('SELECT runner, sum(miles) FROM runs WHERE time > 1451606400 GROUP BY runner;')
 all_time_mileage = c.fetchall()
 
-c.execute('SELECT runner, miles, time FROM runs ORDER BY miles DESC LIMIT 10;')
+c.execute('SELECT runner, miles, time FROM runs WHERE time > 1451606400 ORDER BY miles DESC LIMIT 10;')
 high_scores = c.fetchall()
 
 conn.close()
